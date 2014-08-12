@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="no.granum.android.giftr" >
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name="no.granum.android.giftr.GiftRApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="no.granum.android.giftr.views.main.MainFeedActivity"
+            android:label="@string/title_activity_main_feed" >
+        </activity>
+        <activity
+            android:name="no.granum.android.giftr.views.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="no.granum.android.giftr.views.wishlist.ViewWishListsActivity"
+            android:label="@string/title_activity_view_wish_lists"
+            android:parentActivityName="no.granum.android.giftr.views.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.granum.android.giftr.views.MainActivity" />
+        </activity>
+        <activity
+            android:name="no.granum.android.giftr.views.wishlist.AddWishListActivity"
+            android:label="@string/title_activity_add_wish_list"></activity>
+        <activity
+            android:name="no.granum.android.giftr.views.wishlistitem.ViewWishListItemsActivity"
+            android:label="@string/title_activity_view_wish_list_items"
+            android:parentActivityName="no.granum.android.giftr.views.wishlist.ViewWishListsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.granum.android.giftr.views.wishlist.ViewWishListsActivity" />
+        </activity>
+        <activity
+            android:name="no.granum.android.giftr.views.wishlistitem.AddWishListItemActivity"
+            android:label="@string/title_activity_add_wish_list_item"
+            android:parentActivityName="no.granum.android.giftr.views.wishlistitem.ViewWishListItemsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.granum.android.giftr.views.wishlistitem.ViewWishListItemsActivity" />
+        </activity>
+
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+        <provider
+            android:name="com.facebook.NativeAppCallContentProvider"
+            android:authorities="com.facebook.app.NativeAppCallContentProvider463519200411932"
+            android:exported="true" />
+    </application>
+</manifest>
