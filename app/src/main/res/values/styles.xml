@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="LoginTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/gradient_bg</item>
+    </style>
+
 </resources>

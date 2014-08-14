@@ -25,6 +25,6 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:20.0.+'
-    compile project(':facebook')
     compile 'com.etsy.android.grid:library:1.0.5'
+    compile project(':ParseLoginUI')
 }

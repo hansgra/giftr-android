@@ -27,6 +27,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +54,9 @@ public class ViewWishListsActivity extends Activity {
 
         setContentView(R.layout.activity_view_wishlists);
 
+        ParseLoginBuilder builder = new ParseLoginBuilder(ViewWishListsActivity.this);
+        startActivityForResult(builder.build(), 0);
+
         userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         userNameView = (TextView) findViewById(R.id.userName);
         userLocationView = (TextView) findViewById(R.id.userLocation);
@@ -69,10 +73,12 @@ public class ViewWishListsActivity extends Activity {
         });
 
         // Fetch Facebook user info if the session is active
+/*
         Session session = ParseFacebookUtils.getSession();
         if (session != null && session.isOpened()) {
             makeMeRequest();
         }
+*/
 
         final ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setOnItemClickListener(new OnItemClickListener() {

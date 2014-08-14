@@ -19,7 +19,7 @@
     <string name="list_item_add">Add</string>
     <string name="list_item_url">Url</string>
     <string name="list_item_title">Title</string>
-    <string name="title_activity_view_wish_lists">View Lists</string>
+    <string name="title_activity_view_wish_lists">giftr</string>
     <string name="title_activity_view_wish_list_items">View Items</string>
     <string name="title_activity_add_wish_list_item">Add Item</string>
     <string name="login">Log In</string>
@@ -29,6 +29,7 @@
     <string name="gender">Gender</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="relationship">Relationship</string>
+    <string name="reset_password">Reset password</string>
 
     <color name="second_grey">#ffeeeeee</color>
     <color name="card_shadow">#8c666666</color>

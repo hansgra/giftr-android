@@ -1,10 +1,14 @@
 package no.granum.android.giftr.views.wishlist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.etsy.android.grid.util.DynamicHeightImageView;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
@@ -40,11 +44,16 @@ public class WishListItemAdapter extends ParseQueryAdapter<WishListItem> {
         super.getItemView(item, v, parent);
 
         // Add and download the image
-        ParseImageView todoImage = (ParseImageView) v.findViewById(R.id.icon);
+        DynamicHeightImageView todoImage = (DynamicHeightImageView) v.findViewById(R.id.imgView);
         ParseFile imageFile = item.getImage();
         if (imageFile != null) {
-            todoImage.setParseFile(imageFile);
-            todoImage.loadInBackground();
+            try {
+                byte[] bytes = imageFile.getData();
+                todoImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                //todoImage.loadInBackground();
+            } catch (Exception e) {
+
+            }
         }
 
         // Add the title view

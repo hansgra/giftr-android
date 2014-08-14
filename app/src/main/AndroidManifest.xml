@@ -11,7 +11,7 @@
     <application
         android:name="no.granum.android.giftr.GiftRApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/giftr_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -21,18 +21,15 @@
         <activity
             android:name="no.granum.android.giftr.views.MainActivity"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="no.granum.android.giftr.views.wishlist.ViewWishListsActivity"
             android:label="@string/title_activity_view_wish_lists"
             android:parentActivityName="no.granum.android.giftr.views.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="no.granum.android.giftr.views.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="no.granum.android.giftr.views.wishlist.AddWishListActivity"
@@ -57,6 +54,32 @@
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name" />
+
+        <activity
+            android:name="com.parse.ui.ParseLoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/LoginTheme">
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
+                android:value="true"/>
+
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.APP_LOGO"
+                android:resource="@drawable/giftr_logo"/>
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_ENABLED"
+                android:value="true"/>
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.TWITTER_LOGIN_ENABLED"
+                android:value="true"/>
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_HELP_TEXT"
+                android:value="@string/reset_password"/>
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_EMAIL_AS_USERNAME"
+                android:value="true"/>
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

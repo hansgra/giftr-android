@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -62,7 +63,7 @@ public class ViewWishListItemsActivity extends Activity {
 
         setContentView(R.layout.activity_view_wishlist_items);
 
-        final ListView listView = (ListView) findViewById(R.id.grid_view);
+        final StaggeredGridView listView = (StaggeredGridView) findViewById(R.id.grid_view);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
