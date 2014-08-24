@@ -36,4 +36,9 @@
     <color name="card_white">#ffffffff</color>
     <color name="actionbar_background">#aabbccdd</color>
 
+    <string-array name="my_facebook_permissions">
+        <item>public_profile</item>
+        <item>user_friends</item>
+    </string-array>
+
 </resources>

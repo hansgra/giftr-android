@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/panel_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
-    android:orientation="horizontal" >
-    <com.etsy.android.grid.util.DynamicHeightImageView
-        android:id="@+id/imgView"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <ViewSwitcher
+        android:id="@+id/switcher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:inAnimation="@anim/fade_in"
+        android:outAnimation="@anim/fade_out"
+        android:background="#cccccc">
+
+        <ImageView
+            android:id="@+id/imgPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/giftr_logo" />
+
+        <com.etsy.android.grid.util.DynamicHeightImageView
+            android:id="@+id/imgView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"/>
+    </ViewSwitcher>
 
     <TextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#99ffffff"
-        android:padding="5dp"
+        android:background="#ffffff"
         android:textColor="#666666"
         android:textColorHint="#666666"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:typeface="sans" />
+        android:typeface="sans"
+        android:text="Placeholder"/>
 
     <TextView
         android:id="@+id/timestamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#cccccc"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:text="Time and date"/>
 
-</FrameLayout>
+</LinearLayout>

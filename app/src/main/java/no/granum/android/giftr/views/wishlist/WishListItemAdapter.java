@@ -7,8 +7,11 @@ import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
@@ -43,14 +46,22 @@ public class WishListItemAdapter extends ParseQueryAdapter<WishListItem> {
 
         super.getItemView(item, v, parent);
 
+        final DynamicHeightImageView image = (DynamicHeightImageView)v.findViewById(R.id.imgView);
+        final ViewSwitcher switcher = (ViewSwitcher)v.findViewById(R.id.switcher);
+
         // Add and download the image
-        DynamicHeightImageView todoImage = (DynamicHeightImageView) v.findViewById(R.id.imgView);
         ParseFile imageFile = item.getImage();
         if (imageFile != null) {
             try {
-                byte[] bytes = imageFile.getData();
-                todoImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                //todoImage.loadInBackground();
+                imageFile.getDataInBackground(
+                        new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, ParseException e) {
+                                image.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                                switcher.showNext();
+                            }
+                        }
+                );
             } catch (Exception e) {
 
             }

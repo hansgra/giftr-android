@@ -32,19 +32,17 @@ import com.parse.ui.ParseLoginBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import no.granum.android.giftr.R;
 import no.granum.android.giftr.views.MainActivity;
 import no.granum.android.giftr.views.wishlistitem.ViewWishListItemsActivity;
 
 public class ViewWishListsActivity extends Activity {
     private no.granum.android.giftr.services.WishListService listService;
-    private ProfilePictureView userProfilePictureView;
-    private TextView userNameView;
-    private TextView userLocationView;
-    private TextView userGenderView;
-    private TextView userDateOfBirthView;
-    private TextView userRelationshipView;
-    private Button logoutButton;
+    private ProfilePictureView profilePictureView;
+    private TextView profileNameView;
 
 
     @SuppressLint("NewApi")
@@ -57,20 +55,9 @@ public class ViewWishListsActivity extends Activity {
         ParseLoginBuilder builder = new ParseLoginBuilder(ViewWishListsActivity.this);
         startActivityForResult(builder.build(), 0);
 
-        userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
-        userNameView = (TextView) findViewById(R.id.userName);
-        userLocationView = (TextView) findViewById(R.id.userLocation);
-        userGenderView = (TextView) findViewById(R.id.userGender);
-        userDateOfBirthView = (TextView) findViewById(R.id.userDateOfBirth);
-        userRelationshipView = (TextView) findViewById(R.id.userRelationship);
+        profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
+        profileNameView = (TextView) findViewById(R.id.profileName);
 
-        logoutButton = (Button) findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLogoutButtonClicked();
-            }
-        });
 
         // Fetch Facebook user info if the session is active
 /*
@@ -108,6 +95,9 @@ public class ViewWishListsActivity extends Activity {
         //adapter.setImageKey("photo");
 
         listView.setAdapter(adapter);
+
+        ParseQueryAdapter<ParseObject> adapter =
+                new ParseQueryAdapter<ParseObject>(this, getFacebookFriendsInBackground());
 
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -170,72 +160,6 @@ public class ViewWishListsActivity extends Activity {
         startActivity(intent);
     }
 
-    private void makeMeRequest() {
-        Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
-                new Request.GraphUserCallback() {
-                    @Override
-                    public void onCompleted(GraphUser user, Response response) {
-                        if (user != null) {
-                            // Create a JSON object to hold the profile info
-                            JSONObject userProfile = new JSONObject();
-                            try {
-                                // Populate the JSON object
-                                userProfile.put("facebookId", user.getId());
-                                userProfile.put("name", user.getName());
-                                if (user.getLocation().getProperty("name") != null) {
-                                    userProfile.put("location", (String) user
-                                            .getLocation().getProperty("name"));
-                                }
-                                if (user.getProperty("gender") != null) {
-                                    userProfile.put("gender",
-                                            (String) user.getProperty("gender"));
-                                }
-                                if (user.getBirthday() != null) {
-                                    userProfile.put("birthday",
-                                            user.getBirthday());
-                                }
-                                if (user.getProperty("relationship_status") != null) {
-                                    userProfile
-                                            .put("relationship_status",
-                                                    (String) user
-                                                            .getProperty("relationship_status")
-                                            );
-                                }
-
-                                // Save the user profile info in a user property
-                                ParseUser currentUser = ParseUser
-                                        .getCurrentUser();
-                                currentUser.put("profile", userProfile);
-                                currentUser.saveInBackground();
-
-                                // Show the user info
-                                updateViewsWithProfileInfo();
-                            } catch (JSONException e) {
-                                Log.d("HELLO",
-                                        "Error parsing returned user data.");
-                            }
-
-                        } else if (response.getError() != null) {
-                            if ((response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_RETRY)
-                                    || (response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_REOPEN_SESSION)) {
-                                Log.d("HELLO",
-                                        "The facebook session was invalidated.");
-                                onLogoutButtonClicked();
-                            } else {
-                                Log.d("HELLO",
-                                        "Some other error: "
-                                                + response.getError()
-                                                .getErrorMessage()
-                                );
-                            }
-                        }
-                    }
-                }
-        );
-        request.executeAsync();
-
-    }
-
     private void updateViewsWithProfileInfo() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser.get("profile") != null) {
@@ -244,38 +168,15 @@ public class ViewWishListsActivity extends Activity {
                 if (userProfile.getString("facebookId") != null) {
                     String facebookId = userProfile.get("facebookId")
                             .toString();
-                    userProfilePictureView.setProfileId(facebookId);
+                    profilePictureView.setProfileId(facebookId);
                 } else {
                     // Show the default, blank user profile picture
-                    userProfilePictureView.setProfileId(null);
+                    profilePictureView.setProfileId(null);
                 }
                 if (userProfile.getString("name") != null) {
-                    userNameView.setText(userProfile.getString("name"));
-                } else {
-                    userNameView.setText("");
+                    profileNameView.setText(userProfile.getString("name"));
                 }
-                if (userProfile.getString("location") != null) {
-                    userLocationView.setText(userProfile.getString("location"));
-                } else {
-                    userLocationView.setText("");
-                }
-                if (userProfile.getString("gender") != null) {
-                    userGenderView.setText(userProfile.getString("gender"));
-                } else {
-                    userGenderView.setText("");
-                }
-                if (userProfile.getString("birthday") != null) {
-                    userDateOfBirthView.setText(userProfile
-                            .getString("birthday"));
-                } else {
-                    userDateOfBirthView.setText("");
-                }
-                if (userProfile.getString("relationship_status") != null) {
-                    userRelationshipView.setText(userProfile
-                            .getString("relationship_status"));
-                } else {
-                    userRelationshipView.setText("");
-                }
+
             } catch (JSONException e) {
                 Log.d("HELLO",
                         "Error parsing saved user data.");
@@ -297,5 +198,41 @@ public class ViewWishListsActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private static void getFacebookIdInBackground() {
+        Request.newMeRequest(ParseFacebookUtils.getSession(), new Request.GraphUserCallback() {
+            @Override
+            public void onCompleted(GraphUser user, Response response) {
+                if (user != null) {
+                    ParseUser.getCurrentUser().put("fbId", user.getId());
+                    ParseUser.getCurrentUser().saveInBackground();
+                }
+            }
+        }).executeAsync();
+    }
+
+    private static void getFacebookFriendsInBackground() {
+        Request.newMyFriendsRequest(ParseFacebookUtils.getSession(), new Request.GraphUserListCallback() {
+
+            @Override
+            public void onCompleted(List<GraphUser> users, Response response) {
+                if (users != null) {
+                    List<String> friendsList = new ArrayList<String>();
+                    for (GraphUser user : users) {
+                        friendsList.add(user.getId());
+                    }
+
+                    // Construct a ParseUser query that will find friends whose
+                    // facebook IDs are contained in the current user's friend list.
+                    ParseQuery friendQuery = ParseQuery.getUserQuery();
+                    friendQuery.whereContainedIn("fbId", friendsList);
+
+                    // findObjects will return a list of ParseUsers that are friends with
+                    // the current user
+                    List<ParseObject> friendUsers = friendQuery.find();
+                }
+            }
+        }).executeAsync();
     }
 }
